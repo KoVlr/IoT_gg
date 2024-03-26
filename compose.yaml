@@ -26,6 +26,13 @@ services:
       - influxdb
       - mosquitto
 
+  device_simulation:
+    image: device_simulation
+    depends_on:
+      - influxdb
+      - mosquitto
+      - telegraf
+
   # grafana:
   #   image: grafana/grafana-oss:8.4.3
   #   volumes:
