@@ -41,14 +41,16 @@ services:
       - mosquitto
       - telegraf
 
-  # grafana:
-  #   image: grafana/grafana-oss:8.4.3
-  #   volumes:
-  #     - grafana-storage:/var/lib/grafana:rw
-  #   depends_on:
-  #     - influxdb
-  #   ports:
-  #     - ${GRAFANA_PORT}:3000
+  grafana:
+    image: grafana/grafana-oss
+    ports:
+      - '3000:3000'
+    depends_on:
+      - influxdb
+    volumes:
+      - grafana:/var/lib/grafana
 
 volumes:
   influxdb-storage:
+  influxDb: {}
+  grafana: {}
