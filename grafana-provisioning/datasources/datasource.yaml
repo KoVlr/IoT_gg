@@ -1,0 +1,13 @@
+apiVersion: 1
+datasources:
+  - name: OwIoT
+    type: influxdb
+    access: proxy
+    url: http://influxdb:8086
+    jsonData:
+      version: Flux
+      organization: OwIoT
+      defaultBucket: Bucket1
+      tlsSkipVerify: true
+    secureJsonData:
+      token: -26-13uBQv1GDeha90VbDV0riw3fHFHudLakLFUtmeJvKgaS7AB578e_9e24c4Io5fJvdq5DBYJveB9aarHaPA==
