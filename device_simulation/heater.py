@@ -17,6 +17,7 @@ class Heater(SimulationModel):
         self.max_fuel_amount: float = 5 #liters
         self.fuel_consumption: float = 2.78e-4 #liters per second
         self.air_flow_rate: float = 1 #kg per second
+        self.battery_charge = 100
 
         self.environment: Room = environment
         self.state: State = state
@@ -36,6 +37,7 @@ class Heater(SimulationModel):
             self._fuel_amount = value
 
     def _tick(self):
+        self.battery_charge -= 1e-5 * self.interval
         if self.fuel_amount <= 0:
             self.turn_off
         if self.is_on:
