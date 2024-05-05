@@ -1,9 +1,4 @@
 {
-    "__inputs": [],
-    "__requires": [],
-    "annotations": {
-      "list": []
-    },
     "editable": true,
     "gnetId": null,
     "graphTooltip": 0,
@@ -17,7 +12,7 @@
         "dashLength": 10,
         "dashes": false,
         "datasource": "OwIoT",
-        "fill": 2,
+        "fill": 0,
         "gridPos": {
           "h": 8,
           "w": 24,
@@ -34,13 +29,11 @@
           "rightSide": false,
           "show": true,
           "total": false,
-          "values": false
+          "values": true
         },
         "lines": true,
-        "linewidth": 30,
-        "links": [],
+        "linewidth": 5,
         "nullPointMode": "null",
-        "percentage": false,
         "pointradius": 5,
         "points": false,
         "renderer": "flot",
@@ -66,24 +59,15 @@
           "show": true,
           "values": []
         },
-        "yaxes": [
+        "yaxis": 
           {
             "format": "short",
             "label": null,
             "logBase": 1,
-            "max": 50,
+            "max": 100,
             "min": -30,
             "show": true
           },
-          {
-            "format": "short",
-            "label": null,
-            "logBase": 1,
-            "max": 50,
-            "min": -30,
-            "show": true
-          }
-        ],
         "targets": [
           {
             "dsType": "influxdb",
@@ -104,8 +88,8 @@
             "measurement": "gw_Load_rps",
             "orderByTime": "ASC",
             "policy": "default",
-            "query": "from(bucket:\"Bucket1\")\n|> range(start: -10h)\n",
-            "rawQuery": true,
+            "query": "from(bucket:\"Bucket1\")\n|> range(start: -10h)\n  |> filter(fn: (r) => r._field == \"temperature\")\n",
+            "rawQuery": false,
             "refId": "A",
             "resultFormat": "time_series",
             "select": [
@@ -119,6 +103,15 @@
               ]
             ],
             "tags": []
+          }
+        ]
+      },
+      {
+        "type": "gauge",
+        "datasource": "OwIoT",
+        "targets": [
+          {
+            "query": "from(bucket:\"Bucket1\") |> range(start: -10h) |> filter(fn: (r) => r._measurement == \"heater\" and r._field == \"fuel_amount\")"
           }
         ]
       }
@@ -139,6 +132,6 @@
       "time_options": ["5m", "15m", "1h", "6h", "12h", "24h", "2d", "7d", "30d"]
     },
     "timezone": "browser",
-    "title": "Cluster",
+    "title": "OwIoT_Garage",
     "version": 0
   }

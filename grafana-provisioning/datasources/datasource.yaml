@@ -10,4 +10,5 @@ datasources:
       defaultBucket: Bucket1
       tlsSkipVerify: true
     secureJsonData:
-      token: -26-13uBQv1GDeha90VbDV0riw3fHFHudLakLFUtmeJvKgaS7AB578e_9e24c4Io5fJvdq5DBYJveB9aarHaPA==
+#      token: -26-13uBQv1GDeha90VbDV0riw3fHFHudLakLFUtmeJvKgaS7AB578e_9e24c4Io5fJvdq5DBYJveB9aarHaPA==
+      token: f635bdedd0cb0d31731bdb3d292b694870f10482bd36a64f65c51af46624e256
