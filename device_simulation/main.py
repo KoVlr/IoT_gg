@@ -19,7 +19,7 @@ while True:
     mqttc.publish("iot_gg", f"heater "
                   f"temperature={room.heater.temperature},"
                   f"fuel_amount={room.heater.fuel_amount},"
-                  f"state={1 if room.heater.is_on else 0},"
+                  f"state={1 if room.heater.is_on() else 0},"
                   f"preset_temperature={room.heater.preset_temperature},"
                   f"battery_charge={room.heater.battery_charge} {timestamp}")
     sleep(10)

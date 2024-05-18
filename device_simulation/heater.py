@@ -40,7 +40,7 @@ class Heater(SimulationModel):
         self.battery_charge -= 1e-5 * self.interval
         if self.fuel_amount <= 0:
             self.turn_off
-        if self.is_on:
+        if self.is_on():
             self.fuel_amount -= self.interval * self.fuel_consumption
             self.temperature = self.preset_temperature
         else:
