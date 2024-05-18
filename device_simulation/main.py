@@ -6,10 +6,25 @@ from datetime import datetime
 room = Room(15, -5)
 room.start()
 
+def on_connect(client, userdata, flags, reason_code, properties):
+    if reason_code.is_failure:
+        print(f"Failed to connect: {reason_code}.")
+    else:
+        client.subscribe("iot_gg/control/heater")
+
+def on_message(client, userdata, message):
+    if "instruction state=0" in message.payload.decode():
+        room.heater.turn_off()
+    elif "instruction state=1" in message.payload.decode():
+        room.heater.turn_on()
+
 mqttc = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
+mqttc.on_connect = on_connect
+mqttc.on_message = on_message
 mqttc.connect("mosquitto")
 
-room.start()
+mqttc.loop_start()
+
 while True:
     timestamp = str(int(datetime.now().timestamp())) + "0" * 9
     mqttc.publish("iot_gg", f"room "
@@ -24,5 +39,6 @@ while True:
                   f"battery_charge={room.heater.battery_charge} {timestamp}")
     sleep(10)
 
+mqttc.loop_stop()
 room.stop()
 mqttc.disconnect()
