@@ -4,13 +4,11 @@
     "graphTooltip": 0,
     "hideControls": false,
     "id": null,
-    "links": [],
+
     "panels": [
       {
-        "aliasColors": {},
-        "bars": false,
-        "dashLength": 10,
-        "dashes": false,
+        "type": "timeseries",
+        "title": "Temp & Heater State",
         "datasource": "OwIoT",
         "fill": 0,
         "gridPos": {
@@ -19,39 +17,9 @@
           "x": 0,
           "y": 0
         },
-        "id": 2,
-        "legend": {
-          "alignAsTable": false,
-          "avg": false,
-          "current": false,
-          "max": false,
-          "min": false,
-          "rightSide": false,
-          "show": true,
-          "total": false,
-          "values": true
-        },
         "lines": true,
         "linewidth": 5,
-        "nullPointMode": "null",
         "pointradius": 5,
-        "points": false,
-        "renderer": "flot",
-        "repeat": null,
-        "seriesOverrides": [],
-        "spaceLength": 10,
-        "stack": false,
-        "steppedLine": false,
-        "thresholds": [],
-        "timeFrom": null,
-        "timeShift": null,
-        "title": "temperature",
-        "tooltip": {
-          "shared": true,
-          "sort": 0,
-          "value_type": "individual"
-        },
-        "type": "graph",
         "xaxis": {
           "buckets": null,
           "mode": "time",
@@ -59,70 +27,191 @@
           "show": true,
           "values": []
         },
-        "yaxis": 
-          {
-            "format": "short",
-            "label": null,
-            "logBase": 1,
-            "max": 100,
-            "min": -30,
-            "show": true
-          },
         "targets": [
           {
-            "dsType": "influxdb",
-            "groupBy": [
-              {
-                "params": [
-                  "$__interval"
-                ],
-                "type": "time"
-              },
-              {
-                "params": [
-                  "0"
-                ],
-                "type": "fill"
-              }
-            ],
-            "measurement": "gw_Load_rps",
-            "orderByTime": "ASC",
-            "policy": "default",
+            "alias": "Temp",
             "query": "from(bucket:\"Bucket1\")\n|> range(start: -10h)\n  |> filter(fn: (r) => r._field == \"temperature\")\n",
-            "rawQuery": false,
             "refId": "A",
-            "resultFormat": "time_series",
-            "select": [
-              [
+            "format": "celsius"
+          },
+          {
+            "alias": "State",
+            "query": "from(bucket:\"Bucket1\") |> range(start: -10h) |> filter(fn: (r) => r._field == \"state\")",
+            "refId": "B",
+            "format": "bool_on_off"
+          }
+        ],
+        "fieldConfig":{
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "state"
+              },
+              "properties": [
                 {
-                  "params": [
-                    "value"
-                  ],
-                  "type": "field"
+                  "id": "custom.axisPlacement",
+                  "value": "right"
+                },
+                {
+                  "id": "custom.axisSoftMin",
+                  "value": 0
+                },
+                {
+                  "id": "custom.axisSoftMax",
+                  "value": 1
+                },
+                {
+                  "id": "custom.fillOpacity",
+                  "value": 20
+                },
+                {
+                  "id": "color",
+                  "value": {
+                    "mode": "fixed",
+                    "fixedColor": "dark-red"
+                  }
+                },
+                {
+                  "id": "displayName",
+                  "value": "Heater state"
                 }
               ]
-            ],
-            "tags": []
-          }
-        ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "temperature"
+              },
+              "properties": [
+                {
+                  "id": "custom.axisSoftMin",
+                  "value": -20
+                },
+                {
+                  "id": "custom.axisSoftMax",
+                  "value": 100
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "heater temperature {host=\"cab9025902b4\", topic=\"iot_gg\"}"
+              },
+              "properties": [
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "orange",
+                        "value": null
+                      },
+                      {
+                        "color": "semi-dark-red",
+                        "value": 90
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "displayName",
+                  "value": "Heater"
+                },
+                {
+                  "id": "color",
+                  "value": {
+                    "mode": "thresholds"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "room temperature {host=\"cab9025902b4\", topic=\"iot_gg\"}"
+              },
+              "properties": [
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": null
+                      },
+                      {
+                        "value": 5,
+                        "color": "dark-blue"
+                      },
+                      {
+                        "color": "red",
+                        "value": 30
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "displayName",
+                  "value": "Room"
+                },
+                {
+                  "id": "color",
+                  "value": {
+                    "mode": "thresholds"
+                  }
+                }
+              ]
+            }
+          ]
+        }
       },
+
       {
         "type": "gauge",
+        "title": "Fuel level",
         "datasource": "OwIoT",
+        "gridPos": {
+          "h": 6,
+          "w": 4,
+          "x": 0,
+          "y": 9
+        },
+        "fieldConfig": {
+          "defaults": {
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "red",
+                  "value": 0
+                },
+                {
+                  "color": "orange",
+                  "value": 1
+                },
+                {
+                  "color": "green",
+                  "value": 2.5
+                }
+              ]
+            },
+            "min": "0",
+            "max": "10",
+            "unit": "litre"
+          }
+        },
         "targets": [
           {
-            "query": "from(bucket:\"Bucket1\") |> range(start: -10h) |> filter(fn: (r) => r._measurement == \"heater\" and r._field == \"fuel_amount\")"
+            "query": "from(bucket:\"Bucket1\") |> range(start: -1m) |> filter(fn: (r) => r._measurement == \"heater\" and r._field == \"fuel_amount\")"
           }
         ]
       }
     ],
-    "refresh": "",
-    "rows": [],
     "schemaVersion": 16,
-    "tags": [""],
-    "templating": {
-      "list": []
-    },
     "time": {
       "from": "now-6h",
       "to": "now"
