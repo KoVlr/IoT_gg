@@ -175,8 +175,8 @@
         "title": "Fuel level",
         "datasource": "OwIoT",
         "gridPos": {
-          "h": 6,
-          "w": 4,
+          "h": 8,
+          "w": 6,
           "x": 0,
           "y": 9
         },
@@ -207,6 +207,84 @@
         "targets": [
           {
             "query": "from(bucket:\"Bucket1\") |> range(start: -1m) |> filter(fn: (r) => r._measurement == \"heater\" and r._field == \"fuel_amount\")"
+          }
+        ]
+      },
+
+      {
+        "type": "stat",
+        "title": "Fuel consumption",
+        "gridPos": {
+          "x": 6,
+          "y": 9,
+          "w": 6,
+          "h": 8
+        },
+        "datasource": {
+          "uid": "P6BE54FEF571B9527",
+          "type": "influxdb"
+        },
+        "id": 3,
+        "targets": [
+          {
+            "datasource": {
+              "type": "influxdb",
+              "uid": "P6BE54FEF571B9527"
+            },
+            "refId": "A",
+            "query": "union(tables: [\n  from(bucket:\"Bucket1\") |> range(start: -5m) |> filter(fn: (r) => r._measurement == \"heater\" and r._field == \"fuel_amount\")|> first(), \n  from(bucket:\"Bucket1\") |> range(start: -5m) |> filter(fn: (r) => r._measurement == \"heater\" and r._field == \"fuel_amount\") |> last()])\n|> difference() |> last() |> map(fn: (r) => ({r with _value: r._value * 12.0}))"
+          },
+          {
+            "datasource": {
+              "uid": "P6BE54FEF571B9527",
+              "type": "influxdb"
+            },
+            "refId": "B",
+            "hide": false,
+            "query": ""
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unitScale": true,
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 1.2
+                }
+              ]
+            },
+            "color": {
+              "mode": "thresholds"
+            }
+          },
+          "overrides": []
+        },
+        "options": {
+          "colorMode": "value"
+        },
+        "pluginVersion": "10.3.3",
+        "transformations": [
+          {
+            "id": "calculateField",
+            "options": {
+              "mode": "unary",
+              "reduce": {
+                "reducer": "sum"
+              },
+              "replaceFields": true,
+              "unary": {
+                "fieldName": "fuel_amount {host=\"cab9025902b4\", topic=\"iot_gg\"}",
+                "operator": "abs"
+              }
+            }
           }
         ]
       }
