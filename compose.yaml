@@ -33,6 +33,14 @@ services:
       - mosquitto
       - telegraf
 
+  client:
+    image: client
+    ports:
+      - 80:80
+    depends_on:
+      - mosquitto
+      - telegraf
+
   # grafana:
   #   image: grafana/grafana-oss:8.4.3
   #   volumes:

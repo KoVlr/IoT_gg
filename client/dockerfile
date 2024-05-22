@@ -1,0 +1,11 @@
+FROM python:alpine3.19
+
+WORKDIR /code
+
+RUN pip install fastapi
+RUN pip install paho-mqtt
+
+COPY ./main.py /code/
+COPY ./index.html /code/
+
+CMD ["fastapi", "run", "main.py", "--port", "80"]
