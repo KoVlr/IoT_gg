@@ -10,8 +10,12 @@
       fetch("http://localhost:80/heater?state=0", {method: "POST"});
     }
   </script>
-  <body>
-    <button id="on" onclick="turn_on()">Turn ON</button>
-    <button id="off" onclick="turn_off()">Turn OFF</button>
+  <body style="display: flex; justify-content: center;">
+    <button id="on" onclick="turn_on()" style="width: 30%; height: 30%; margin: 5%; font-size: 21px;">
+      Turn ON
+    </button>
+    <button id="off" onclick="turn_off()" style="width: 30%; height: 30%; margin: 5%; font-size: 21px;">
+      Turn OFF
+    </button>
   </body>
 </html>
