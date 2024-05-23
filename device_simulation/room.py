@@ -49,9 +49,18 @@ saturated_steam_density_table = [
 ]
 
 def get_saturated_steam_density(temperature):
-    for item in reversed(saturated_steam_density_table):
-        if temperature >= item[0]:
-            return item[1]
+    i = 1
+    while i < len(saturated_steam_density_table):
+        if(temperature < saturated_steam_density_table[i][0]):
+            break
+        i += 1
+    x0 = saturated_steam_density_table[i-1][0]
+    y0 = saturated_steam_density_table[i-1][1]
+    x1 = saturated_steam_density_table[i][0]
+    y1 = saturated_steam_density_table[i][1]
+    x = temperature
+    return y0 + (x - x0)*(y1 - y0)/(x1-x0)
+        
         
 class Room(SimulationModel):
     def __init__(self, temperature, outside_temperature):
