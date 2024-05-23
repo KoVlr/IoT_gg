@@ -1,7 +1,7 @@
 FROM python:alpine3.19
+RUN pip install paho-mqtt
 ADD main.py .
 ADD heater.py .
 ADD room.py .
 ADD simulation_model.py .
-RUN pip install paho-mqtt
 CMD ["python", "-u", "./main.py"]
