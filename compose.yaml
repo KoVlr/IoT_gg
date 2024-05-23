@@ -53,5 +53,4 @@ services:
 
 volumes:
   influxdb-storage:
-  influxDb: {}
   grafana: {}
